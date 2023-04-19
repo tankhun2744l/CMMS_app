@@ -13,7 +13,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use('/DB',routerDB) 
 app.use('./netlify/functions/api',routerDB)
-app.listen(2000, () => {
-  console.log('Application is running on port 2000');
+app.listen(5000, () => {
+  console.log('Application is running on port 5000');
 });
 
