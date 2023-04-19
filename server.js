@@ -13,7 +13,6 @@ app.use(express.json({limit: '50mb'}))
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use('/DB',routerDB) 
-app.use('./netlify/functions/api',routerDB)
 app.listen(PORT, () => {
   console.log('Application is running on port 5000');
 });
