@@ -1,17 +1,17 @@
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-    host: '68.178.227.196',
+    host: '192.168.241.72',
     user: 'efinFP',
     password: 'efinFP',
-    database: 'device_asset'
+    database: 'CMMS'
 });
 
 connection.connect((err) => {
     if (!!err) {
         console.log(err);
     } else {
-        console.log('Connecting...');
+        console.log('Connected...');
     }
   
   });
