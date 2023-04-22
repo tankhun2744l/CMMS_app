@@ -6,6 +6,10 @@ cors = require("cors")
 
 const app = express();
 const routerDB = require('./Route/conDb');
+app.use((req,res, next)=>{
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers','Origin, X-Requseted-With, Content-Type, Accept');
+})
 app.get('/', (req, res) => {
   res.json({ message: 'hello!' });
 });
