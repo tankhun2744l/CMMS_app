@@ -203,7 +203,7 @@ router.post('/tbl_list_repair2', async (req, res) => {
        
             const sql = "INSERT INTO tbl_repair (image,device_id) VALUES(?,?)"
             connect.query(sql, [image,id], (err, results) => {  if (err) throw err;
-                res.setHeader('Access-Control-Allow-Origin', 'https://starlit-selkie-1d9956.netlify.app');
+                res.setHeader('Access-Control-Allow-Origin', 'https://beautiful-blini-a9b6bb.netlify.app');
                 res.send(results)   
 			}); 
       
