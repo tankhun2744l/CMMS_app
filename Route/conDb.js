@@ -197,6 +197,7 @@ const storage = multer.diskStorage({
 //-------post image from uplodaimage.js to database ----------------------------------------------
 router.post('/tbl_list_repair2', async (req, res) => {	
     try {
+        res.setHeader('Access-Control-Allow-Origin', 'https://starlit-selkie-1d9956.netlify.app');
         console.log(req.body.body.imgs);
         console.log(req.body);
         const image = req.body.body.imgs;
