@@ -75,7 +75,7 @@ router.put ("/update/:admin_id" ,(req,res,next) => {
     const admin_id = req.body.admin_id;
     
     console.log('edit',req.body)
-    connect.query('UPDATE CMMS.tbl_admin SET admin_name=?,admin_email=?,admin_password=?,admin_phone=?,admin_address=?,admin_designation=?,created_timestamp=now(),updated_timestamp=now() WHERE admin_id = ?',[admin_name,admin_email,admin_password,admin_phone,admin_address,admin_designation,admin_id,created_timestamp,updated_timestamp],
+    connect.query('UPDATE device_asset.tbl_admin SET admin_name=?,admin_email=?,admin_password=?,admin_phone=?,admin_address=?,admin_designation=?,created_timestamp=now(),updated_timestamp=now() WHERE admin_id = ?',[admin_name,admin_email,admin_password,admin_phone,admin_address,admin_designation,admin_id,created_timestamp,updated_timestamp],
     (err,result) => {
         if (err){
             console.log(err);
@@ -391,7 +391,7 @@ router.get ("/get/status/device/:device_id" ,(req,res,next) => {
     const device_id = req.params.device_id;
     console.log('555',req.params)
 
-    connect.query('SELECT * FROM tbl_repair WHERE device_id = ? ',device_id,
+    connect.query('SELECT * FROM tbl_repair WHERE device_id = ? order by id desc',device_id,
     (err,rows) => {
         if (err){
             res.send(err)
@@ -399,7 +399,8 @@ router.get ("/get/status/device/:device_id" ,(req,res,next) => {
         else {
             Object.keys(rows).forEach(function (key) {
                 var row = rows[key];
-                res.send(row)
+                 res.send(row)
+                //console.log(rows);
                 
             })
             // console.log(rows);
