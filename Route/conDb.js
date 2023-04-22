@@ -197,9 +197,9 @@ const storage = multer.diskStorage({
 //-------post image from uplodaimage.js to database ----------------------------------------------
 router.post('/tbl_list_repair2', async (req, res) => {	
     try {
-        console.log(req.body.body.userInfo.filepreview);
+        console.log(req.body.body.imgs);
         console.log(req.body);
-        const image = req.body.body.userInfo.filepreview;
+        const image = req.body.body.imgs;
        
            const id = req.body.body.id
        
