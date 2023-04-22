@@ -8,7 +8,15 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+      return res.status(200).json({});
+    }
+    next();
+  });
 
 
 //get Admin
@@ -197,7 +205,7 @@ const storage = multer.diskStorage({
 //-------post image from uplodaimage.js to database ----------------------------------------------
 router.post('/tbl_list_repair2', async (req, res) => {	
     try {
-        res.setHeader('Access-Control-Allow-Origin', 'https://starlit-selkie-1d9956.netlify.app');
+        
         console.log(req.body.body.imgs);
         console.log(req.body);
         const image = req.body.body.imgs;
@@ -206,7 +214,7 @@ router.post('/tbl_list_repair2', async (req, res) => {
        
             const sql = "INSERT INTO tbl_repair (image,device_id) VALUES(?,?)"
             connect.query(sql, [image,id], (err, results) => {  if (err) throw err;
-			     
+                res.setHeader('Access-Control-Allow-Origin', 'https://starlit-selkie-1d9956.netlify.app');
                 res.send(results)   
 			}); 
       
