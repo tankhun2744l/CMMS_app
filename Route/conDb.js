@@ -8,6 +8,9 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
+
+
 //get Admin
 router.get('/tbl_admin',async (req,res,next) => {
     try {
@@ -179,22 +182,9 @@ router.get('/getstatus/:id',async (req,res) => {
 })
 
 
-
-
-
-//
-const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../public_html/', 'uploads'),
-    filename: function (req, file, cb) {   
-        // null as first argument means no error
-        cb(null, Date.now() + '-' + file.originalname )  
-    }
-})
-
 //-------post image from uplodaimage.js to database ----------------------------------------------
 router.post('/tbl_list_repair2', async (req, res) => {	
     try {
-        
         console.log(req.body.body.imgs);
         console.log(req.body);
         const image = req.body.body.imgs;
@@ -203,7 +193,8 @@ router.post('/tbl_list_repair2', async (req, res) => {
        
             const sql = "INSERT INTO tbl_repair (image,device_id) VALUES(?,?)"
             connect.query(sql, [image,id], (err, results) => {  if (err) throw err;
-                res.setHeader('Access-Control-Allow-Origin', 'https://beautiful-blini-a9b6bb.netlify.app');
+              res.setHeader('Access-Control-Allow-Origin', 'https://beautiful-blini-a9b6bb.netlify.app');
+			     
                 res.send(results)   
 			}); 
       
@@ -319,15 +310,11 @@ router.get('/get/activity',async (req,res,next) => {
 
 //update Repair_Status edit 16/04/2023
 router.put ("/update/status/:id" ,(req,res,next) => {
-
     const id = req.params.id;
     const admin_id = req.body.admin_id;
     const status = req.body.status;
     const priority = req.body.priority;
-    
-    
-    
-    
+
     console.log('edit55',req.body)
     connect.query('UPDATE tbl_repair SET status=?,admin_id=?,priority=? WHERE id = ?',[status,admin_id,priority,id],
     (err,result) => {
@@ -341,14 +328,11 @@ router.put ("/update/status/:id" ,(req,res,next) => {
     })
 })
 
-//update Repair_Status when user accep device edit 17/04/2023
+//update Repair_Status when user accep device 
 router.put ("/update/statusComplete/:id" ,(req,res,next) => {
 
     const id = req.params.id;
-    //const admin_id = req.body.admin_id;
     const status = 'Complete';
-    //const priority = req.body.priority;
-    
 
     console.log('edit55',req.body)
     connect.query('UPDATE tbl_repair SET status=? WHERE id = ?',[status,id],
@@ -379,7 +363,6 @@ router.get ("/get/status/:id" ,(req,res,next) => {
                 res.send(row)
                 
             })
-            // console.log(rows);
         }
     }) 
 })
@@ -579,6 +562,328 @@ router.post("/sendEmailAdmin",(req,res,next) => {
 
 // })
 
+//-------------------------------------------------------------------------------------------gate-------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------gate-------------------------------------------------------------------------------------------------
 
+//--------------------------Users-----------------------------------------------------
+//get employee
+router.get("/tbl_employee", async (req, res, next) => {
+    try {
+      connect.query("SELECT * FROM tbl_employee", (err, rows) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(rows);
+        }
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  });
+
+  //add employee (user)
+router.post("/tbl_employee2", (req, res, next) => {
+    const employee_name = req.body.employee_name;
+    //const admin_designation = req.body.admin_designation;
+    const employee_email = req.body.employee_email;
+    //const admin_password = req.body.admin_password;
+    //const confirmpassword = req.body.confirmpassword;
+    const employee_phone = req.body.employee_phone;
+    const created_timestamp = req.body.created_timestamp;
+    const updated_timestamp = req.body.updated_timestamp;
+    const employee_address = req.body.employee_address;
+    const employee_id = req.body.employee_id;
+  
+    console.log("data1", req.body);
+    // console.log(next);
+    // res.send('hello')
+    connect.query(
+      "INSERT INTO tbl_employee (employee_name,employee_email,employee_address,employee_phone,created_timestamp,updated_timestamp) VALUES(?,?,?,?,now(),now())",
+      [
+        employee_name,
+        employee_email,
+        employee_address,
+        employee_phone,
+        created_timestamp,
+        updated_timestamp,
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("Values inserted");
+        }
+      }
+    );
+  });
+
+
+  //update dataEmployee(user)
+router.put("/update/user/:employee_id", (req, res, next) => {
+    const employee_name = req.body.employee_name;
+    //const admin_designation = req.body.admin_designation;
+    const employee_email = req.body.employee_email;
+    //const admin_password = req.body.admin_password;
+    //const confirmpassword = req.body.confirmpassword;
+    const employee_phone = req.body.employee_phone;
+    const created_timestamp = req.body.created_timestamp;
+    const updated_timestamp = req.body.updated_timestamp;
+    const employee_address = req.body.employee_address;
+    const employee_id = req.body.employee_id;
+  
+    console.log("edit", req.body);
+    connect.query(
+      "UPDATE tbl_employee SET employee_name=?,employee_email=?,employee_address=?,employee_phone=?,created_timestamp=now(),updated_timestamp=now() WHERE employee_id = ?",
+      [
+        employee_name,
+        employee_email,
+        employee_address,
+        employee_phone,
+        employee_id,
+        created_timestamp,
+        updated_timestamp,
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("Values updated");
+        }
+      }
+    );
+    console.log("Values updated2");
+  });
+
+  //get Employee for edit employee(user)
+router.get("/getUser/:employee_id", (req, res, next) => {
+    const employee_id = req.params.employee_id;
+    
+    console.log("555", req.params);
+  
+    connect.query(
+      "SELECT * FROM tbl_employee WHERE employee_id = ? ",
+      employee_id,
+      (err, rows) => {
+        if (err) {
+          res.send(err);
+        } else {
+          Object.keys(rows).forEach(function (key) {
+            var row = rows[key];
+            res.send(row);
+          });
+          // console.log(rows);
+        }
+      }
+    );
+  });
+
+  //delete employee (user)
+router.delete("/deleteUser/:employee_id", (req, res) => {
+    const employee_id = req.params.employee_id;
+    connect.query(
+      "DELETE FROM tbl_employee WHERE employee_id = ?",
+      employee_id,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(result);
+        }
+      }
+    );
+    console.log("success");
+  });
+
+
+  //--------------------------------------------------------------Devices---------------------------------------------------
+//get Devices
+router.get("/tbl_device", async (req, res, next) => {
+    try {
+      connect.query("SELECT * FROM tbl_device", (err, rows) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(rows);
+        }
+      });
+    } catch (e) {
+      res.send(e);
+    }
+  });
+
+
+  //add Devices
+router.post("/tbl_device2", (req, res, next) => {
+    const device_name = req.body.device_name;
+    const device_warranty = req.body.device_warranty;
+    const device_producer = req.body.device_producer;
+    const device_cost = req.body.device_cost;
+    const device_image = req.body.device_image;
+    const device_note = req.body.device_note;
+    const device_status = req.body.device_status;
+    const device_model = req.body.device_model;
+    const device_serial = req.body.device_serial;
+    const device_asset_tag = req.body.device_asset_tag;
+    const device_id = req.body.device_id;
+    const created_timestamp = req.body.created_timestamp;
+    const updated_timestamp = req.body.updated_timestamp;
+  
+    console.log("data1", req.body);
+    // console.log(next);
+    // res.send('hello')
+    connect.query(
+      "INSERT INTO tbl_device (device_name,device_warranty,device_producer,device_cost,device_image,device_note,device_status,device_model,device_serial,device_asset_tag,created_timestamp,updated_timestamp) VALUES(?,?,?,?,?,?,?,?,?,?,now(),now())",
+      [
+        device_name,
+        device_warranty,
+        device_producer,
+        device_cost,
+        device_image,
+        device_note,
+        device_status,
+        device_model,
+        device_serial,
+        device_asset_tag,
+        created_timestamp,
+        updated_timestamp,
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("Values inserted");
+        }
+      }
+    );
+  });
+
+  //update device
+router.put("/update/Device/:device_id", (req, res, next) => {
+    const device_name = req.body.device_name;
+    const device_warranty = req.body.device_warranty;
+    const device_producer = req.body.device_producer;
+    const device_cost = req.body.device_cost;
+    const device_image = req.body.device_image;
+    const device_note = req.body.device_note;
+    const device_status = req.body.device_status;
+    const device_model = req.body.device_model;
+    const device_serial = req.body.device_serial;
+    const device_asset_tag = req.body.device_asset_tag;
+    const device_id = req.params.device_id;
+    const created_timestamp = req.body.created_timestamp;
+    const updated_timestamp = req.body.updated_timestamp;
+  
+    console.log("edit", req.body);
+    console.log('name',device_name);
+    connect.query(
+      "UPDATE device_asset.tbl_device SET device_name=?,device_warranty=?,device_producer=?,device_cost=?,device_image=?,device_note=?,device_status=?,device_model=?,device_serial=?,device_asset_tag=?,created_timestamp=now(),updated_timestamp=now() WHERE device_id = ?",
+      [
+        device_name,
+        device_warranty,
+        device_producer,
+        device_cost,
+        device_image,
+        device_note,
+        device_status,
+        device_model,
+        device_serial,
+        device_asset_tag,
+         device_id,
+        created_timestamp,
+        updated_timestamp,
+       
+      ],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("Values updated");
+          console.log("Values updated2");
+        }
+      }
+    );
+    
+  });
+
+  //get Device by id
+router.get("/getAsset/:device_id", (req, res, next) => {
+    const device_id = req.params.device_id;
+    console.log("555", req.params);
+  
+    connect.query(
+      "SELECT * FROM tbl_device WHERE device_id = ? ",
+      device_id,
+      (err, rows) => {
+        if (err) {
+          res.send(err);
+        } else {
+          Object.keys(rows).forEach(function (key) {
+            var row = rows[key];
+            res.send(row);
+          });
+          // console.log(rows);
+        }
+      }
+    );
+  });
+
+  //QR
+router.get("/getQR/:device_id", (req, res, next) => {
+    const device_id = req.params.device_id;
+    console.log("555", req.params);
+  
+    connect.query(
+      "SELECT * FROM tbl_device WHERE device_id = ? ",
+      device_id,
+      (err, rows) => {
+        if (err) {
+          res.send(err);
+        } else {
+          Object.keys(rows).forEach(function (key) {
+            var row = rows[key];
+            res.send(row);
+          });
+          // console.log(rows);
+        }
+      }
+    );
+  });
+
+  //delete device
+router.delete("/delete/:device_id", (req, res) => {
+    const device_id = req.params.device_id;
+    connect.query(
+      "DELETE FROM tbl_device WHERE device_id = ?",
+      device_id,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(result);
+        }
+      }
+    );
+    console.log("success");
+  });
+
+  //Dvice
+  router.post("/tbl_device3", async (req, res) => {
+    try {
+      console.log(req.body.body.userInfo.filepreview);
+      console.log(req.body);
+      const image = req.body.body.userInfo.filepreview;
+  
+      const id = req.body.body.id;
+  
+      const sql = "INSERT INTO tbl_repair (device_image,device_id) VALUES(?,?)";
+      connect.query(sql, [image, id], (err, results) => {
+        if (err) throw err;
+  
+        res.send(results);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
 module.exports = router;
