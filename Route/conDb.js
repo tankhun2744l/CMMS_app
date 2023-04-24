@@ -14,7 +14,7 @@ dotenv.config();
 //get Admin
 router.get('/tbl_admin',async (req,res,next) => {
     try {
-        connect.query('SELECT * FROM tbl_admin',(err,rows) => {
+        connect.query('SELECT * FROM tbl_admin order by admin_id desc',(err,rows) => {
             if (err){
                 res.send(err)
             }
@@ -561,6 +561,54 @@ router.post("/sendEmailAdmin",(req,res,next) => {
 // });
 
 // })
+
+router.post('/admin/login', async (req, res) => {
+
+  const admin_email = req.body.admin_email;
+  const admin_password = req.body.admin_password;
+
+  
+    connect.query('SELECT * FROM tbl_admin WHERE admin_email = ? AND admin_password = ?', [admin_email, admin_password], (err, results) => {
+      if (err) {
+        res.send({ err: err })
+      }
+      if (results.length > 0) {
+        Object.keys(results).forEach(function (key) {
+          var row = results[key];
+          res.send(row)
+      })
+      } else {
+        res.status(500).send("Invalid Credentials");
+         
+      }
+
+    })
+  
+
+})
+
+//change pass
+router.post("/changepassword", (req, res) => {
+  const new_pass = req.body.new_pass;
+  const admin_id = req.body.admin_id;
+  console.log('id',admin_id);
+  console.log('new',new_pass);
+
+  connect.query(
+    "UPDATE tbl_admin SET admin_password = ? WHERE admin_id = ?;",
+    [new_pass, admin_id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: "Error updating password" });
+      } else {
+        res.status(200).json({ message: "Password updated successfully" });
+      }
+    }
+  );
+});
+
+
 
 //-------------------------------------------------------------------------------------------gate-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------gate-------------------------------------------------------------------------------------------------
