@@ -993,8 +993,8 @@ router.post("/update/ownner", async (req, res, next) => {
 //get owner
 router.get ("/get/employee_name" ,(req,res,next) => {
   const sql = `SELECT d.device_id, d.device_name, d.device_producer, d.device_status, e.employee_name, d.device_note, d.device_serial, d.device_model,o.owner_id
-  FROM tbl_owner AS o
-  LEFT JOIN tbl_device AS d ON o.device_id = d.device_id 
+  FROM tbl_device AS d
+  LEFT JOIN tbl_owner AS o ON o.device_id = d.device_id 
   LEFT JOIN tbl_employee AS e ON o.employee_id = e.employee_id
   ORDER BY o.owner_id DESC`;
   
