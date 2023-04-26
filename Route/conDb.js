@@ -759,6 +759,28 @@ router.get("/tbl_device", async (req, res, next) => {
     }
   });
 
+  //get Devices
+router.get("/getCheck/:device_id", async (req, res, next) => {
+  const device_id = req.params.device_id;
+  console.log('555',req.params)
+
+  connect.query('SELECT * FROM tbl_device WHERE device_id = ? ',[device_id],
+  (err,rows) => {
+      if (err){
+          res.send(err)
+      }
+      else {
+          Object.keys(rows).forEach(function (key) {
+              var row = rows[key];
+              res.send(row)
+              
+          })
+          // console.log(rows);
+      }
+  }) 
+});
+
+
 
   //add Devices
 router.post("/tbl_device2", (req, res, next) => {
@@ -772,6 +794,9 @@ router.post("/tbl_device2", (req, res, next) => {
     const device_model = req.body.device_model;
     const device_serial = req.body.device_serial;
     const device_asset_tag = req.body.device_asset_tag;
+    const device_year = req.body.device_year;
+    const device_month = req.body.device_month;
+    const device_date = req.body.device_date;
     const device_id = req.body.device_id;
     const created_timestamp = req.body.created_timestamp;
     const updated_timestamp = req.body.updated_timestamp;
@@ -780,7 +805,7 @@ router.post("/tbl_device2", (req, res, next) => {
     // console.log(next);
     // res.send('hello')
     connect.query(
-      "INSERT INTO tbl_device (device_name,device_warranty,device_producer,device_cost,device_image,device_note,device_status,device_model,device_serial,device_asset_tag,created_timestamp,updated_timestamp) VALUES(?,?,?,?,?,?,?,?,?,?,now(),now())",
+      "INSERT INTO tbl_device (device_name,device_warranty,device_producer,device_cost,device_image,device_note,device_status,device_model,device_serial,device_asset_tag,device_year,device_month,device_date,created_timestamp,updated_timestamp) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now())",
       [
         device_name,
         device_warranty,
@@ -792,6 +817,9 @@ router.post("/tbl_device2", (req, res, next) => {
         device_model,
         device_serial,
         device_asset_tag,
+        device_year,
+        device_month,
+        device_date,
         created_timestamp,
         updated_timestamp,
       ],
@@ -806,7 +834,7 @@ router.post("/tbl_device2", (req, res, next) => {
   });
 
   //update device
-router.put("/update/Device/:device_id", (req, res, next) => {
+  router.put("/update/Device/:device_id", (req, res, next) => {
     const device_name = req.body.device_name;
     const device_warranty = req.body.device_warranty;
     const device_producer = req.body.device_producer;
@@ -817,6 +845,9 @@ router.put("/update/Device/:device_id", (req, res, next) => {
     const device_model = req.body.device_model;
     const device_serial = req.body.device_serial;
     const device_asset_tag = req.body.device_asset_tag;
+    const device_year = req.body.device_year;
+    const device_month = req.body.device_month;
+    const device_date = req.body.device_date;
     const device_id = req.params.device_id;
     const created_timestamp = req.body.created_timestamp;
     const updated_timestamp = req.body.updated_timestamp;
@@ -824,7 +855,7 @@ router.put("/update/Device/:device_id", (req, res, next) => {
     console.log("edit", req.body);
     console.log('name',device_name);
     connect.query(
-      "UPDATE device_asset.tbl_device SET device_name=?,device_warranty=?,device_producer=?,device_cost=?,device_image=?,device_note=?,device_status=?,device_model=?,device_serial=?,device_asset_tag=?,created_timestamp=now(),updated_timestamp=now() WHERE device_id = ?",
+      "UPDATE device_asset.tbl_device SET device_name=?,device_warranty=?,device_producer=?,device_cost=?,device_image=?,device_note=?,device_status=?,device_model=?,device_serial=?,device_asset_tag=?,device_year=?,device_month=?,device_date=?,created_timestamp=now(),updated_timestamp=now() WHERE device_id = ?",
       [
         device_name,
         device_warranty,
@@ -836,7 +867,10 @@ router.put("/update/Device/:device_id", (req, res, next) => {
         device_model,
         device_serial,
         device_asset_tag,
-         device_id,
+        device_year,
+        device_month,
+        device_date,
+        device_id,
         created_timestamp,
         updated_timestamp,
        
@@ -933,5 +967,83 @@ router.delete("/delete/:device_id", (req, res) => {
       console.log(err);
     }
   });
+
+
+    //add owner
+router.post("/update/ownner", async (req, res, next) => {
+  const device_id = req.body.device_id;
+  const employee_id = req.body.employee_id;
+  const owner_note = req.body.owner_note;
+
+  console.log('555',req.body)
+
+  connect.query('INSERT INTO tbl_owner (device_id,employee_id,owner_note,created_timestamp,updated_timestamp) VALUES(?,?,?,now(),now())',[device_id,employee_id,owner_note],
+  (err,result) => {
+    if (err){
+        console.log(err);
+    
+    }
+    else{
+        res.send("Values inserted");
+    }
+}
+)
+});
+
+//get owner
+router.get ("/get/employee_name" ,(req,res,next) => {
+  const sql = `SELECT d.device_id, d.device_name, d.device_producer, d.device_status, e.employee_name, d.device_note, d.device_serial, d.device_model,o.owner_id
+  FROM tbl_owner AS o
+  LEFT JOIN tbl_device AS d ON o.device_id = d.device_id 
+  LEFT JOIN tbl_employee AS e ON o.employee_id = e.employee_id
+  ORDER BY o.owner_id DESC`;
+  
+
+  connect.query(sql, (error, results, fields) => {
+      if (error) {
+          console.log(error);
+          res.status(500).json({error: 'Error fetching data from database.'});
+      } else {
+          res.json(results);
+      }
+  });
+})
+
+ //update Owner
+ router.put("/updateOwner_id", (req, res, next) => {
+  const owner_id = req.body.owner_id;
+  const employee_id = null;
+  const note = null;
+  const created_timestamp = req.body.created_timestamp ;
+  const updated_timestamp = req.body.updated_timestamp ;
+  
+
+  console.log("help", owner_id);
+  
+  connect.query(
+    "UPDATE tbl_owner SET employee_id=?,owner_note=?,created_timestamp=now(),updated_timestamp=now() WHERE tbl_owner.owner_id = ?",
+    [
+      
+      employee_id,
+      note,
+      owner_id,
+      created_timestamp,
+      updated_timestamp,
+     
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Values updated");
+        console.log("Values updated2");
+      }
+    }
+  );
+  
+});
+
+
+
 
 module.exports = router;
