@@ -15,7 +15,6 @@ dotenv.config();
 router.get('/tbl_admin',async (req,res,next) => {
     try {
         connect.query('SELECT * FROM tbl_admin order by admin_id desc',(err,rows) => {
-          res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
             if (err){
                 res.send(err)
             }
@@ -50,7 +49,6 @@ router.post("/tbl_admin2" ,(req,res,next) => {
     connect.query('INSERT INTO tbl_admin (admin_name,admin_designation,admin_email,admin_password,admin_phone,admin_address,created_timestamp,updated_timestamp) VALUES(?,?,?,?,?,?,now(),now())',
     [admin_name,admin_designation,admin_email,admin_password,admin_phone,admin_address,created_timestamp,updated_timestamp],
     (err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             console.log(err);
         
@@ -79,7 +77,6 @@ router.put ("/update/:admin_id" ,(req,res,next) => {
     console.log('edit',req.body)
     connect.query('UPDATE device_asset.tbl_admin SET admin_name=?,admin_email=?,admin_password=?,admin_phone=?,admin_address=?,admin_designation=?,created_timestamp=now(),updated_timestamp=now() WHERE admin_id = ?',[admin_name,admin_email,admin_password,admin_phone,admin_address,admin_designation,admin_id,created_timestamp,updated_timestamp],
     (err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             console.log(err);
         
@@ -98,7 +95,6 @@ router.get ("/getEmployee/:admin_id" ,(req,res,next) => {
 
     connect.query('SELECT * FROM tbl_admin WHERE admin_id = ? ',admin_id,
     (err,rows) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             res.send(err)
         }
@@ -118,7 +114,6 @@ router.delete('/delete/:admin_id',(req,res) => {
     
     const admin_id = req.params.admin_id;
     connect.query('DELETE FROM tbl_admin WHERE admin_id = ?',admin_id,(err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if(err){
         
             console.log(err);
@@ -148,7 +143,6 @@ router.post("/tbl_list_repair" ,(req,res,next) => {
     connect.query('INSERT INTO tbl_list_repair (case_detail,created_timestamp,updated_timestamp) VALUES(?,now(),now())',
     [case_detail,created_timestamp,updated_timestamp],
     (err,resul) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             console.log(err);
         
@@ -171,7 +165,6 @@ router.get('/getstatus/:id',async (req,res) => {
         const id = req.params.id;
     
         connect.query(`SELECT * FROM boi_it_smt WHERE id= '\t${id}\t'`, (err, result) => {
-          res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
             if (err) {
 
                 console.log(err);
@@ -214,7 +207,6 @@ router.get ("/getImage/:id" ,(req,res,next) => {
 
     connect.query('SELECT * FROM tbl_repair WHERE id = ?',id,
     (err,rows) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             res.send(err)
         }
@@ -233,7 +225,6 @@ router.get('/gat/tbl_tastimg/:id',async (req,res,next) => {
     console.log('id11',req.params)
     try {
         connect.query('SELECT * FROM tbl_repair WHERE id = ?',id,(err,rows) => {
-          res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
             if (err){
                 res.send(err)
             }
@@ -260,7 +251,6 @@ router.put ("/put/repair/:id" ,(req,res,next) => {
     console.log('reqbody',req.body)
     connect.query('UPDATE tbl_repair SET case_detail=? WHERE id = ?',[case_detail,id],
     (err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         lineNotify.notify({
             message:'\nแจ้งซ่อมอุปกรณ์\n'  +employee_name+ 
                     '\nรายละเอียด : ' + case_detail+ 
@@ -303,7 +293,6 @@ router.put ("/put/repair/:id" ,(req,res,next) => {
 router.get('/get/activity',async (req,res,next) => {
     try {
         connect.query('SELECT * FROM tbl_repair',(err,rows) => {
-          res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
             if (err){
                 res.send(err)
             }
@@ -329,7 +318,6 @@ router.put ("/update/status/:id" ,(req,res,next) => {
     console.log('edit55',req.body)
     connect.query('UPDATE tbl_repair SET status=?,admin_id=?,priority=? WHERE id = ?',[status,admin_id,priority,id],
     (err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             console.log(err);
         
@@ -349,7 +337,6 @@ router.put ("/update/statusComplete/:id" ,(req,res,next) => {
     console.log('edit55',req.body)
     connect.query('UPDATE tbl_repair SET status=? WHERE id = ?',[status,id],
     (err,result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             console.log(err);
         
@@ -367,7 +354,6 @@ router.get ("/get/status/:id" ,(req,res,next) => {
 
     connect.query('SELECT * FROM device_asset.tbl_repair WHERE id = ? ',id,
     (err,rows) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             res.send(err)
         }
@@ -388,7 +374,6 @@ router.get ("/get/status/device/:device_id" ,(req,res,next) => {
 
     connect.query('SELECT * FROM tbl_repair WHERE device_id = ? order by id desc',device_id,
     (err,rows) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             res.send(err)
         }
@@ -411,7 +396,6 @@ router.get ("/getDataDevice/:device_id" ,(req,res,next) => {
 
     connect.query('SELECT * FROM tbl_device WHERE device_id = ? ',device_id,
     (err,rows) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err){
             res.send(err)
         }
@@ -441,7 +425,6 @@ router.get ("/get/get/for/join" ,(req,res,next) => {
     `;
 
     connect.query(sql, (error, results, fields) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (error) {
             console.log(error);
             res.status(500).json({error: 'Error fetching data from database.'});
@@ -466,7 +449,6 @@ router.get ("/get/get/for/join1/:id" ,(req,res,next) => {
         WHERE r.id = ?        
     `;
     connect.query(sql,id, (error, results, fields) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (error) {
             console.log(error);
             res.status(500).json({error: 'Error fetching data from database.'});
@@ -587,7 +569,6 @@ router.post('/admin/login', async (req, res) => {
 
   
     connect.query('SELECT * FROM tbl_admin WHERE admin_email = ? AND admin_password = ?', [admin_email, admin_password], (err, results) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
       if (err) {
         res.send({ err: err })
       }
@@ -617,7 +598,6 @@ router.post("/changepassword", (req, res) => {
     "UPDATE tbl_admin SET admin_password = ? WHERE admin_id = ?;",
     [new_pass, admin_id],
     (err, result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
       if (err) {
         console.log(err);
         res.status(500).json({ message: "Error updating password" });
@@ -638,7 +618,6 @@ router.post("/changepassword", (req, res) => {
 router.get("/tbl_employee", async (req, res, next) => {
     try {
       connect.query("SELECT * FROM tbl_employee", (err, rows) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           res.send(err);
         } else {
@@ -677,7 +656,6 @@ router.post("/tbl_employee2", (req, res, next) => {
         updated_timestamp,
       ],
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -714,7 +692,6 @@ router.put("/update/user/:employee_id", (req, res, next) => {
         updated_timestamp,
       ],
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -735,7 +712,6 @@ router.get("/getUser/:employee_id", (req, res, next) => {
       "SELECT * FROM tbl_employee WHERE employee_id = ? ",
       employee_id,
       (err, rows) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           res.send(err);
         } else {
@@ -756,7 +732,6 @@ router.delete("/deleteUser/:employee_id", (req, res) => {
       "DELETE FROM tbl_employee WHERE employee_id = ?",
       employee_id,
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -773,7 +748,6 @@ router.delete("/deleteUser/:employee_id", (req, res) => {
 router.get("/tbl_device", async (req, res, next) => {
     try {
       connect.query("SELECT * FROM tbl_device", (err, rows) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           res.send(err);
         } else {
@@ -792,7 +766,6 @@ router.get("/getCheck/:device_id", async (req, res, next) => {
 
   connect.query('SELECT * FROM tbl_device WHERE device_id = ? ',[device_id],
   (err,rows) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
       if (err){
           res.send(err)
       }
@@ -851,7 +824,6 @@ router.post("/tbl_device2", (req, res, next) => {
         updated_timestamp,
       ],
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -904,7 +876,6 @@ router.post("/tbl_device2", (req, res, next) => {
        
       ],
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -925,7 +896,6 @@ router.get("/getAsset/:device_id", (req, res, next) => {
       "SELECT * FROM tbl_device WHERE device_id = ? ",
       device_id,
       (err, rows) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           res.send(err);
         } else {
@@ -968,7 +938,6 @@ router.delete("/delete/:device_id", (req, res) => {
       "DELETE FROM tbl_device WHERE device_id = ?",
       device_id,
       (err, result) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) {
           console.log(err);
         } else {
@@ -990,7 +959,6 @@ router.delete("/delete/:device_id", (req, res) => {
   
       const sql = "INSERT INTO tbl_repair (device_image,device_id) VALUES(?,?)";
       connect.query(sql, [image, id], (err, results) => {
-        res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
         if (err) throw err;
   
         res.send(results);
@@ -1011,7 +979,6 @@ router.post("/update/ownner", async (req, res, next) => {
 
   connect.query('INSERT INTO tbl_owner (device_id,employee_id,owner_note,created_timestamp,updated_timestamp) VALUES(?,?,?,now(),now())',[device_id,employee_id,owner_note],
   (err,result) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
     if (err){
         console.log(err);
     
@@ -1033,7 +1000,6 @@ router.get ("/get/employee_name" ,(req,res,next) => {
   
 
   connect.query(sql, (error, results, fields) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
       if (error) {
           console.log(error);
           res.status(500).json({error: 'Error fetching data from database.'});
@@ -1066,7 +1032,6 @@ router.get ("/get/employee_name" ,(req,res,next) => {
      
     ],
     (err, result) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
       if (err) {
         console.log(err);
       } else {
