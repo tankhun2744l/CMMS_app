@@ -8,7 +8,7 @@ const app = express();
 const routerDB = require('./Route/conDb');
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://644bdd93bcc826238878d7a1--hilarious-taiyaki-075d8b.netlify.app');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
