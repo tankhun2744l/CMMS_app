@@ -193,7 +193,8 @@ router.post('/tbl_list_repair2', async (req, res) => {
        
             const sql = "INSERT INTO tbl_repair (image,device_id) VALUES(?,?)"
             connect.query(sql, [image,id], (err, results) => {  if (err) throw err;
-              res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
+              // res.setHeader('Access-Control-Allow-Origin', 'https://64495575c8a6b5230a18d55f--extraordinary-marzipan-6130b8.netlify.app');
+              res.setHeader('Access-Control-Allow-Origin', 'https://644bdd93bcc826238878d7a1--hilarious-taiyaki-075d8b.netlify.app');
 			     
                 res.send(results)   
 			}); 
