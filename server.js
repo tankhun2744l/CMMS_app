@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 app.use(express.json({limit: '50mb'}))
 app.use(cors({
-  origin: ['*','https://cmms-oa.herokuapp.com/DB/get/status/device/','http://localhost:3000','https://644d3d5ccbc6c42a0c1d0d2d--thriving-sawine-d6b7ed.netlify.app'],
+  origin: ['*','https://cmms-oa.herokuapp.com/DB/get/status/device/','http://localhost:3000','https://644d455a63f0753206818e65--glittering-pavlova-b27c16.netlify.app'],
   credentials : true
 }));
 app.use(bodyParser.urlencoded({extended:true}))
