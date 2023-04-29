@@ -2,17 +2,10 @@ const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const PORT = process.env.PORT || 5000
-// cors = require("cors")
+cors = require("cors")
 
 const app = express();
 const routerDB = require('./Route/conDb');
-
-const cors = require('cors');
-const corsOptions ={
-    origin:'https://inspiring-fox-feafbe.netlify.app', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -27,10 +20,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'hello!' });
 });
 app.use(express.json({limit: '50mb'}))
-// app.use(cors({
-//   origin: ['*','https://cmms-oa.herokuapp.com/DB/get/status/device/','http://localhost:3000']
-// }));
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: ['*','https://cmms-oa.herokuapp.com/DB/get/status/device/','http://localhost:3000','https://644d3d5ccbc6c42a0c1d0d2d--thriving-sawine-d6b7ed.netlify.app'],
+  credentials : true
+}));
 app.use(bodyParser.urlencoded({extended:true}))
 app.use('/DB',routerDB) 
 app.listen(PORT, () => {
