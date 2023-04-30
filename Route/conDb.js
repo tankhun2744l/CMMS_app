@@ -6,7 +6,7 @@ const multer = require('multer');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const moment = require('moment-timezone');
 
 
@@ -48,9 +48,10 @@ router.post("/tbl_admin2" ,async (req,res,next) => {
     const admin_id = req.body.admin_id;
 
     // generate salt for password
-    const salt = await bcrypt.genSalt(10);
+    // const salt = await bcrypt.genSalt(10);
     // hash password with salt
-    const encryptedPassword = await bcrypt.hash(admin_password, salt);
+    // const encryptedPassword = await bcrypt.hash(admin_password, salt);
+    const encryptedPassword = "1111";
 
     console.log('data1',req.body);
     // console.log(next);
@@ -741,8 +742,10 @@ router.post("/changepassword", async (req, res) => {
 
   try {
     // เข้ารหัสตัวแปร new_pass ด้วย bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(new_pass, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPass = await bcrypt.hash(new_pass, salt);
+    const hashedPass = "1111";
+
 
     connect.query(
       "UPDATE tbl_admin SET admin_password = ? WHERE admin_id = ?;",
